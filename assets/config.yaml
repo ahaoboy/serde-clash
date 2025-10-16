@@ -1,0 +1,184 @@
+# gist https://gist.github.com/kktt007/30b8b98a5c543fd8d78b1b17e932669f
+
+##### 使用说明 #####
+# 1. 请填写 proxy-providers - subscribe - url 为订阅链接
+# 2. 下载 https://github.com/Loyalsoldier/clash-rules/archive/refs/heads/release.zip 并解压至 ./profiles/ruleset 文件夹下
+# 3. 若需要自动更新 ruleset, 请编辑 rule-providers 下各项 type 为 http
+
+##### 参考链接 #####
+# 1. clash 样例配置文件
+#    https://lancellc.gitbook.io/clash/clash-config-file/an-example-configuration-file
+# 2. clash 规则集
+#    https://github.com/Loyalsoldier/clash-rules
+# 3. clash 自定义配置教程
+#    https://donnadie.top/manage-clashx-custom-config/
+# 4. clash 自定义配置样例
+#    https://gist.github.com/ricky9w/31fffc1b6eadadba2603f323dc92bebf
+# 5. clash 自动替换订阅规则
+#    https://github.com/Fndroid/clash_for_windows_pkg/issues/2193
+
+port: 7890
+socks-port: 7891
+allow-lan: true
+mode: rule
+log-level: info
+ipv6: true
+# external-controller 也可以为 0.0.0.0:9090
+# 参考 https://github.com/Dreamacro/clash/wiki/Configuration
+external-controller: 127.0.0.1:9090
+
+# 存放于 ./profiles/proxies 文件夹下
+proxy-providers:
+  subscribe:
+    type: http
+    # 订阅链接, 订阅文件应当为 yaml 格式, 否则应当进行订阅转换
+    url: "example.com"
+    interval: 3600
+    path: ./profiles/proxies/subscribe.yaml
+    health-check:
+      # 选中时是否进行测试
+      enable: false
+      interval: 600
+      url: http://www.gstatic.com/generate_204
+
+proxy-groups:
+  - name: PROXY
+    type: select
+    proxies:
+      - DIRECT
+      - SUBSCRIBE
+      - AUTO
+
+  # 手动选择订阅节点
+  - name: SUBSCRIBE
+    type: select
+    use:
+      - subscribe
+
+  # 自动选择订阅节点
+  - name: AUTO
+    type: url-test
+    use:
+      - subscribe
+
+# 注意: 该功能需要 clash premium 支持
+# 使用 clash-rules 提供的规则, 存放于 ./profiles/ruleset 文件夹下
+# https://github.com/Loyalsoldier/clash-rules
+rule-providers:
+  reject:
+    type: file
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
+    path: ./profiles/ruleset/reject.txt
+    interval: 86400
+
+  icloud:
+    type: file
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt"
+    path: ./profiles/ruleset/icloud.txt
+    interval: 86400
+
+  apple:
+    type: file
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt"
+    path: ./profiles/ruleset/apple.txt
+    interval: 86400
+
+  google:
+    type: file
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/google.txt"
+    path: ./profiles/ruleset/google.txt
+    interval: 86400
+
+  proxy:
+    type: file
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt"
+    path: ./profiles/ruleset/proxy.txt
+    interval: 86400
+
+  direct:
+    type: file
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt"
+    path: ./profiles/ruleset/direct.txt
+    interval: 86400
+
+  private:
+    type: file
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt"
+    path: ./profiles/ruleset/private.txt
+    interval: 86400
+
+  gfw:
+    type: file
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt"
+    path: ./profiles/ruleset/gfw.txt
+    interval: 86400
+
+  greatfire:
+    type: file
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/greatfire.txt"
+    path: ./profiles/ruleset/greatfire.txt
+    interval: 86400
+
+  tld-not-cn:
+    type: file
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/tld-not-cn.txt"
+    path: ./profiles/ruleset/tld-not-cn.txt
+    interval: 86400
+
+  telegramcidr:
+    type: file
+    behavior: ipcidr
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/telegramcidr.txt"
+    path: ./profiles/ruleset/telegramcidr.txt
+    interval: 86400
+
+  cncidr:
+    type: file
+    behavior: ipcidr
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt"
+    path: ./profiles/ruleset/cncidr.txt
+    interval: 86400
+
+  lancidr:
+    type: file
+    behavior: ipcidr
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt"
+    path: ./profiles/ruleset/lancidr.txt
+    interval: 86400
+
+  applications:
+    type: file
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt"
+    path: ./profiles/ruleset/applications.txt
+    interval: 86400
+
+# 这里使用白名单模式, 若要使用黑名单模式, 请参考:
+# https://github.com/Loyalsoldier/clash-rules
+rules:
+  - RULE-SET,applications,DIRECT
+  - DOMAIN,clash.razord.top,DIRECT
+  - DOMAIN,yacd.haishan.me,DIRECT
+  - RULE-SET,private,DIRECT
+  - RULE-SET,reject,REJECT
+  - RULE-SET,icloud,DIRECT
+  - RULE-SET,apple,DIRECT
+  - RULE-SET,google,DIRECT
+  - RULE-SET,proxy,PROXY
+  - RULE-SET,direct,DIRECT
+  - RULE-SET,lancidr,DIRECT
+  - RULE-SET,cncidr,DIRECT
+  - RULE-SET,telegramcidr,PROXY
+  - GEOIP,LAN,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,PROXY
