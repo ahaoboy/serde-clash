@@ -2,6 +2,12 @@
 name = "serde-clash"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+description = "serde-clash"
+repository = "https://github.com/ahaoboy/serde-clash"
+homepage = "https://github.com/ahaoboy/serde-clash"
+authors = ["ahaoboy"]
+include = ["/src", "/Cargo.toml", "/README.md"]
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
