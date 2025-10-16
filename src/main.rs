@@ -33,7 +33,10 @@ fn main() {
     println!("SOCKS Port: {}", config.socks_port);
     println!("Allow LAN: {}", config.allow_lan);
     println!("Mode: {}", config.mode);
-    println!("Log Level: {}", config.log_level);
+    println!(
+        "Log Level: {}",
+        config.log_level.unwrap_or("info".to_string())
+    );
     println!("External Controller: {}", config.external_controller);
 
     println!("\n=== DNS Configuration ===");

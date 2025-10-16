@@ -28,3 +28,4 @@ jobs:
       - name: cargo -q run
         run: |
           cargo -q run -- ./assets/config.yaml
+          cargo -q run -- ./assets/demo.yaml

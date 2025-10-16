@@ -5,9 +5,12 @@ use serde::{Deserialize, Serialize};
 pub struct Config {
     pub port: u16,
     pub socks_port: u16,
+    #[serde(default)]
     pub allow_lan: bool,
     pub mode: String,
-    pub log_level: String,
+    #[serde(default)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub log_level: Option<String>,
     pub external_controller: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub dns: Option<DnsConfig>,
@@ -21,6 +24,7 @@ pub struct Config {
 pub struct DnsConfig {
     pub enable: bool,
     pub nameserver: Vec<String>,
+    #[serde(default)]
     pub fallback: Vec<String>,
 }
 
