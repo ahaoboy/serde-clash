@@ -11,12 +11,23 @@ pub struct Config {
     #[serde(default)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub log_level: Option<String>,
+    #[serde(default)]
+    #[serde(skip_serializing_if = "String::is_empty")]
     pub external_controller: String,
+    #[serde(default)]
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub external_ui: String,
+    #[serde(default)]
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub secret: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub dns: Option<DnsConfig>,
     #[serde(default)]
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub proxies: Vec<Proxy>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub proxy_groups: Vec<ProxyGroup>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub rules: Vec<String>,
 }
 
