@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct Config {
     pub port: u16,
@@ -31,7 +31,7 @@ pub struct Config {
     pub rules: Vec<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Deserialize, Serialize)]
 pub struct DnsConfig {
     pub enable: bool,
     pub nameserver: Vec<String>,
@@ -39,7 +39,7 @@ pub struct DnsConfig {
     pub fallback: Vec<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct Proxy {
     pub name: String,
@@ -57,7 +57,7 @@ pub struct Proxy {
     pub client_fingerprint: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct ProxyGroup {
     pub name: String,
